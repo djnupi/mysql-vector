@@ -190,7 +190,7 @@ CREATE FUNCTION COSIM(v1 JSON, v2 JSON) RETURNS FLOAT DETERMINISTIC BEGIN DECLAR
 		$tableName = $this->getVectorTableName();
 
 		$insertQuery = empty($id) ?
-			"INSERT INTO $tableName (fk, text, vector, normalized_vector, magnitude, binary_code) VALUES (?, ?, ?, UNHEX(?))" :
+			"INSERT INTO $tableName (fk, text, vector, normalized_vector, magnitude, binary_code) VALUES (?, ?, ?, ?, ?, UNHEX(?))" :
 			"UPDATE $tableName SET fk = ?, text = ?, vector = ?, normalized_vector = ?, magnitude = ?, binary_code = UNHEX(?) WHERE id = $id";
 
 		$statement = $this->mysqli->prepare($insertQuery);
@@ -431,7 +431,7 @@ CREATE FUNCTION COSIM(v1 JSON, v2 JSON) RETURNS FLOAT DETERMINISTIC BEGIN DECLAR
 
 		$statement->execute();
 
-		$statement->bind_result($id, $v, $nv, $mag, $sim);
+		$statement->bind_result($id, $fk, $text, $v, $nv, $mag, $sim);
 
 		$results = [];
 		while ($statement->fetch()) {
